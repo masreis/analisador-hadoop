@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -29,6 +31,9 @@ public class ProposicoesPorAreaDriver {
 		//
 		job.setMapperClass(ProposicoesPorAreaMapper.class);
 		job.setReducerClass(ProposicoesPorAreaReducer.class);
+		//
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
 		//
 		try {
 			FileSystem fs = FileSystem.get(job.getConfiguration());

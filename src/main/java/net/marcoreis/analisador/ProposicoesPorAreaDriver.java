@@ -24,7 +24,7 @@ public class ProposicoesPorAreaDriver {
 		//
 		Job job = Job.getInstance();
 		job.setJarByClass(ProposicoesPorAreaDriver.class);
-		job.setJobName("Contador de proposições legislativas por área e ano");
+		job.setJobName("Contador de proposições legislativas");
 		//
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));

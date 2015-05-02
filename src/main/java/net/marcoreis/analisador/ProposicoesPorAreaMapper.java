@@ -13,8 +13,10 @@ public class ProposicoesPorAreaMapper extends
 	protected void map(LongWritable key, Text value, Context context)
 			throws IOException, InterruptedException {
 		String[] valores = value.toString().split(";");
-		String ano = valores[0].substring(6);
-		String area = valores[32]; // Area da proposicao
-		context.write(new Text(ano + "-" + area), new IntWritable(1));
+		String areasComVirgula = valores[32]; // Area da proposicao
+		String[] areas = areasComVirgula.split(",");
+		for (String area : areas) {
+			context.write(new Text(area.trim()), new IntWritable(1));
+		}
 	}
 }

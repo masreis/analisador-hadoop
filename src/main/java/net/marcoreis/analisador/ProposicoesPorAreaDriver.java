@@ -32,9 +32,6 @@ public class ProposicoesPorAreaDriver {
 		job.setMapperClass(ProposicoesPorAreaMapper.class);
 		job.setReducerClass(ProposicoesPorAreaReducer.class);
 		//
-		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
-		//
 		try {
 			FileSystem fs = FileSystem.get(job.getConfiguration());
 			Path saida = new Path(args[1]);
@@ -43,7 +40,8 @@ public class ProposicoesPorAreaDriver {
 				fs.delete(saida, true);
 			}
 		} catch (Exception e) {
-			// Nao funciona rodando pelo Eclipse
+			System.err.println("Erro crítico ao excluir o diretório de saída");
+			System.exit(-1);
 		}
 		//
 		System.exit(job.waitForCompletion(true) ? 0 : 1);

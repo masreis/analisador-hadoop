@@ -1,0 +1,8 @@
+<configuration>
+
+	<property>
+		<name>quantidade.limite.cidades</name>
+		<value>10</value>
+	</property>
+
+</configuration>

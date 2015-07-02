@@ -1,4 +1,4 @@
-package net.marcoreis.analisador;
+package net.marcoreis.hadoop;
 
 import java.io.IOException;
 

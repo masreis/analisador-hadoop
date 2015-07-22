@@ -1,0 +1,8 @@
+<configuration>
+
+	<property>
+		<name>nome.job.municipio.por.valor</name>
+		<value>Job - Município por valor</value>
+	</property>
+
+</configuration>

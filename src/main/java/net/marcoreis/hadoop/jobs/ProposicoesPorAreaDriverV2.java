@@ -1,8 +1,10 @@
-package net.marcoreis.hadoop;
+package net.marcoreis.hadoop.jobs;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -10,20 +12,39 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
 
-public class ProposicoesPorAreaDriver {
+public class ProposicoesPorAreaDriverV2 extends Configured implements Tool {
 
 	private static Logger logger = Logger
-			.getLogger(ProposicoesPorAreaDriver.class.getName());
+			.getLogger(ProposicoesPorAreaDriverV2.class.getName());
+
+	private Configuration conf;
 
 	public static void main(String[] args) throws Exception {
+		ToolRunner.run(new ProposicoesPorAreaDriverV2(), args);
+	}
+
+	public Configuration getConf() {
+		if (conf == null) {
+			conf = new Configuration();
+		}
+		return conf;
+	}
+
+	public void setConf(Configuration conf) {
+		this.conf = conf;
+	}
+
+	public int run(String[] args) throws Exception {
 		if (args.length != 2) {
 			System.err.println("Informe os parâmetros de entrada e saída");
 			System.exit(-1);
 		}
 		//
 		Job job = Job.getInstance();
-		job.setJarByClass(ProposicoesPorAreaDriver.class);
+		job.setJarByClass(ProposicoesPorAreaDriverV2.class);
 		job.setJobName("Contador de proposições legislativas");
 		//
 		FileInputFormat.addInputPath(job, new Path(args[0]));
@@ -47,6 +68,6 @@ public class ProposicoesPorAreaDriver {
 			System.exit(-1);
 		}
 		//
-		System.exit(job.waitForCompletion(true) ? 0 : 1);
+		return job.waitForCompletion(true) ? 0 : 1;
 	}
 }

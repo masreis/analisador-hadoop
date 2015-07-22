@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>Como usar um objeto JSON na página web</title>
+<script language="javascript">
+	var c = [ 1, 2, 3 ]
+
+	var x = {
+		"name" : [ "X", "Y", "Z" ],
+		"grams" : [ 300, 200, 500 ],
+		"qty" : [ 4, 5, null ],
+		"new" : [ true, false, true ],
+	};
+
+	var valores = {
+		"integer" : 42,
+		"fraction" : .2811,
+		"exponent" : 5.56789e+0
+	};
+
+	var valoresLogicos = {
+		"submetido" : true,
+		"validado" : false
+	};
+
+	var text = '{ "funcionarios" : ['
+			+ '{ "nome":"joao" , "sobrenome":"ninguem" },'
+			+ '{ "nome":"ana" , "sobrenome":"maria" },'
+			+ '{ "nome":"pedro" , "sobrenome":"vasconcelos" } ]}';
+
+	var obj = JSON.parse(text);
+
+	document.write(obj);
+	document.write(text);
+
+	var b = {
+		"books" : [ {
+			"language" : "Java",
+			"edition" : "second"
+		}, {
+			"language" : "C++",
+			"lastName" : "fifth"
+		}, {
+			"language" : "C",
+			"lastName" : "third"
+		} ]
+	};
+
+	var d = [ {
+		"Name" : "Anakin",
+		"Gender" : "male",
+		"Homeworld" : "Tatooine",
+		"Born" : "41.9BBY",
+		"Jedi" : "yes"
+	}, {
+		"Name" : "R2-D2",
+		"Gender" : "unknown",
+		"Homeworld" : "Naboo",
+		"Born" : "33BBY",
+		"Jedi" : "no"
+	} ];
+
+	var JSONObj = {
+		"nome" : 'marco',
+		'idade' : 36
+	};
+
+	document.write("<h1>JSON e JavaScript</h1>");
+	document.write("<br>");
+	document.write("<h3>Meu nome é=" + JSONObj.nome + "</h3>");
+	document.write("<h3>idade=" + JSONObj["idade"] + "</h3>");
+
+	//  document.write(eval(JSON.parse(b)));
+
+	document.write(JSON.stringify(d));
+</script>
+</head>
+<body>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package net.marcoreis.hadoop;
+package net.marcoreis.hadoop.jobs;
 
 import java.io.IOException;
 

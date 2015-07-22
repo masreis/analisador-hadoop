@@ -1,4 +1,4 @@
-package net.marcoreis.hadoop;
+package net.marcoreis.hadoop.jobs;
 
 import java.io.IOException;
 
@@ -13,34 +13,39 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.log4j.Logger;
 
-public class CidadesPorValorDriver extends Configured implements Tool {
-	private static Logger logger = Logger.getLogger(CidadesPorValorDriver.class
-			.getName());
+/**
+ * 
+ * @author marco
+ *
+ *         Este job mostra as cidades que mais receberam recursos
+ * 
+ *
+ */
+public class MunicipiosBeneficiadosDriver extends Configured implements Tool {
+	private static Logger logger = Logger.getLogger(MunicipiosBeneficiadosDriver.class.getName());
 
 	public Job criarJob(String inputDir, String outputDir) throws IOException {
+		getConf().addResource("configuracao-job.xml");
 		Job job = Job.getInstance();
-		job.setJarByClass(CidadesPorValorDriver.class);
-		String nomeJob = "Job - Cidades com mais recursos";
+		job.setJarByClass(MunicipiosBeneficiadosDriver.class);
+		String nomeJob = job.getConfiguration().get("nome.job.municipios.beneficiados");
 		job.setJobName(nomeJob);
 		//
 		FileInputFormat.addInputPath(job, new Path(inputDir));
 		FileOutputFormat.setOutputPath(job, new Path(outputDir));
 		//
-		job.setMapperClass(CidadesPorValorMapper.class);
-		job.setReducerClass(CidadesPorValorReducer.class);
+		job.setMapperClass(MunicipiosBeneficiadosMapper.class);
+		job.setReducerClass(MunicipiosBeneficiadosReducer.class);
 		//
-		job.setOutputKeyClass(LongWritable.class);
-		job.setOutputValueClass(Text.class);
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(LongWritable.class);
 		//
-		getConf().addResource("configuracao-bolsa-familia.xml");
-		Integer qtdCidades = Integer.parseInt(getConf().get(
-				"quantidade.limite.cidades"));
 		return job;
 	}
 
 	public static void main(String[] args) {
 		try {
-			int retorno = ToolRunner.run(new CidadesPorValorDriver(), args);
+			int retorno = ToolRunner.run(new MunicipiosBeneficiadosDriver(), args);
 			System.exit(retorno);
 		} catch (Exception e) {
 			logger.error(e);

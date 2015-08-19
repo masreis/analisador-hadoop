@@ -1,50 +1,56 @@
 package net.marcoreis.hadoop.jobs.parte1;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.hadoop.util.Tool;
-import org.apache.hadoop.util.ToolRunner;
 
-public class ProposicoesPorAreaDriverV2 extends Configured implements Tool {
+public class ProposicoesPorAreaMapReduce {
+	private static Logger logger = Logger.getLogger(ProposicoesPorAreaDriver.class.getName());
 
-	private static Logger logger = Logger
-			.getLogger(ProposicoesPorAreaDriverV2.class.getName());
+	public static class ProposicoesPorAreaMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
-	private Configuration conf;
+		protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+			String[] valores = value.toString().split(";");
+			String areasComVirgula = valores[32]; // Area da proposicao
+			String[] areas = areasComVirgula.split(",");
+			for (String area : areas) {
+				context.write(new Text(area.trim()), new IntWritable(1));
+			}
+		}
+	}
+
+	public static class ProposicoesPorAreaReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+
+		protected void reduce(Text key, Iterable<IntWritable> values, Context context)
+				throws IOException, InterruptedException {
+
+			int totalDeProposicoes = 0;
+			for (IntWritable value : values) {
+				totalDeProposicoes++;
+			}
+			context.write(key, new IntWritable(totalDeProposicoes));
+		}
+	}
 
 	public static void main(String[] args) throws Exception {
-		ToolRunner.run(new ProposicoesPorAreaDriverV2(), args);
-	}
-
-	public Configuration getConf() {
-		if (conf == null) {
-			conf = new Configuration();
-		}
-		return conf;
-	}
-
-	public void setConf(Configuration conf) {
-		this.conf = conf;
-	}
-
-	public int run(String[] args) throws Exception {
 		if (args.length != 2) {
 			System.err.println("Informe os parâmetros de entrada e saída");
 			System.exit(-1);
 		}
 		//
 		Job job = Job.getInstance();
-		job.setJarByClass(ProposicoesPorAreaDriverV2.class);
+		job.setJarByClass(ProposicoesPorAreaDriver.class);
 		job.setJobName("Contador de proposições legislativas");
 		//
 		FileInputFormat.addInputPath(job, new Path(args[0]));
@@ -68,6 +74,6 @@ public class ProposicoesPorAreaDriverV2 extends Configured implements Tool {
 			System.exit(-1);
 		}
 		//
-		return job.waitForCompletion(true) ? 0 : 1;
+		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 }

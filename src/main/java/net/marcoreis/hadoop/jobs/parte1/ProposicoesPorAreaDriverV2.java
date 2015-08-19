@@ -3,7 +3,6 @@ package net.marcoreis.hadoop.jobs.parte1;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -17,24 +16,10 @@ import org.apache.hadoop.util.ToolRunner;
 
 public class ProposicoesPorAreaDriverV2 extends Configured implements Tool {
 
-	private static Logger logger = Logger
-			.getLogger(ProposicoesPorAreaDriverV2.class.getName());
-
-	private Configuration conf;
+	private static Logger logger = Logger.getLogger(ProposicoesPorAreaDriverV2.class.getName());
 
 	public static void main(String[] args) throws Exception {
 		ToolRunner.run(new ProposicoesPorAreaDriverV2(), args);
-	}
-
-	public Configuration getConf() {
-		if (conf == null) {
-			conf = new Configuration();
-		}
-		return conf;
-	}
-
-	public void setConf(Configuration conf) {
-		this.conf = conf;
 	}
 
 	public int run(String[] args) throws Exception {

@@ -7,7 +7,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-public class ProposicoesPorAreaDriver {
+public class ProposicoesPorEstadoDriver {
 
 	public static void main(String[] args) throws Exception {
 		if (args.length != 2) {
@@ -16,14 +16,14 @@ public class ProposicoesPorAreaDriver {
 		}
 		//
 		Job job = Job.getInstance();
-		job.setJarByClass(ProposicoesPorAreaDriver.class);
-		job.setJobName("Contador de proposições legislativas");
+		job.setJarByClass(ProposicoesPorEstadoDriver.class);
+		job.setJobName("Média de proposições legislativas por deputado");
 		//
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		//
-		job.setMapperClass(ProposicoesPorAreaMapper.class);
-		job.setReducerClass(ProposicoesPorAreaReducer.class);
+		job.setMapperClass(ProposicoesPorEstadoMapper.class);
+		job.setReducerClass(ProposicoesPorEstadoReducer.class);
 		//
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);

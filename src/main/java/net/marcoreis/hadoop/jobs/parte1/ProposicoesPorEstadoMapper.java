@@ -8,18 +8,15 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-public class ProposicoesPorPeriodoMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+public class ProposicoesPorEstadoMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
 
 	protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 		String[] valores = value.toString().split(";");
-		String data = valores[0];
-		// String periodo = data.substring(6, 10); // Ano com 4 dígitos
-		String periodo = data.substring(3, 10); // Mês-Ano
-
-		// Verifica se o período é numérico
-		if (!NumberUtils.isDigits(periodo.substring(0, 1))) {
+		String estado = valores[36]; // Nome civil do deputado
+		// Verifica se o registro é válido e ignora a primeira linha
+		if (!NumberUtils.isNumber(valores[2]) || "N/A".equals(estado)) {
 			return;
 		}
-		context.write(new Text(periodo), new IntWritable(1));
+		context.write(new Text(estado), new IntWritable(1));
 	}
 }

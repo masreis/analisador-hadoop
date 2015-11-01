@@ -18,6 +18,7 @@ public class ProposicoesPorPeriodoDriver extends Configured implements Tool {
 	@Override
 	public int run(String[] args) throws Exception {
 		Job job = Job.getInstance(getConf());
+		//
 		job.setJarByClass(ProposicoesPorPeriodoDriver.class);
 		job.setJobName("Contador de proposições legislativas por período");
 		//
@@ -31,6 +32,5 @@ public class ProposicoesPorPeriodoDriver extends Configured implements Tool {
 		job.setOutputValueClass(IntWritable.class);
 		//
 		return job.waitForCompletion(true) ? 0 : 1;
-
 	}
 }

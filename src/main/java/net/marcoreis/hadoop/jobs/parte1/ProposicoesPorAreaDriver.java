@@ -10,17 +10,15 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 public class ProposicoesPorAreaDriver {
 
 	public static void main(String[] args) throws Exception {
-		if (args.length != 2) {
-			System.err.println("Informe os parâmetros de entrada e saída");
-			System.exit(-1);
-		}
+		String arquivoEntrada = System.getProperty("user.home") + "/dados/legislativo/entrada/proposicoes.csv";
+		String diretorioSaida = System.getProperty("user.home") + "/dados/legislativo/saida";
 		//
 		Job job = Job.getInstance();
 		job.setJarByClass(ProposicoesPorAreaDriver.class);
 		job.setJobName("Contador de proposições legislativas");
 		//
-		FileInputFormat.addInputPath(job, new Path(args[0]));
-		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+		FileInputFormat.addInputPath(job, new Path(arquivoEntrada));
+		FileOutputFormat.setOutputPath(job, new Path(diretorioSaida));
 		//
 		job.setMapperClass(ProposicoesPorAreaMapper.class);
 		job.setReducerClass(ProposicoesPorAreaReducer.class);

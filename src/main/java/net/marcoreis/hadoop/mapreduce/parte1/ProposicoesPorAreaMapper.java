@@ -1,4 +1,4 @@
-package net.marcoreis.hadoop.jobs.parte1;
+package net.marcoreis.hadoop.mapreduce.parte1;
 
 import java.io.IOException;
 

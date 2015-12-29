@@ -7,6 +7,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 public class ProposicoesPorPeriodoReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+	private IntWritable valor = new IntWritable();
 
 	protected void reduce(Text key, Iterable<IntWritable> values, Context context)
 			throws IOException, InterruptedException {
@@ -15,6 +16,7 @@ public class ProposicoesPorPeriodoReducer extends Reducer<Text, IntWritable, Tex
 		for (IntWritable valor : values) {
 			totalDeProposicoes += valor.get();
 		}
-		context.write(key, new IntWritable(totalDeProposicoes));
+		valor.set(totalDeProposicoes);
+		context.write(key, valor);
 	}
 }

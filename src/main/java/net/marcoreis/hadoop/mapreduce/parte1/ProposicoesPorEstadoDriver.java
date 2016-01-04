@@ -1,7 +1,7 @@
 package net.marcoreis.hadoop.mapreduce.parte1;
 
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -10,23 +10,21 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 public class ProposicoesPorEstadoDriver {
 
 	public static void main(String[] args) throws Exception {
-		if (args.length != 2) {
-			System.err.println("Informe os parâmetros de entrada e saída");
-			System.exit(-1);
-		}
+		String arquivoEntrada = System.getProperty("user.home") + "/dados/legislativo/entrada/proposicoes.csv";
+		String diretorioSaida = System.getProperty("user.home") + "/dados/legislativo/saida";
 		//
 		Job job = Job.getInstance();
 		job.setJarByClass(ProposicoesPorEstadoDriver.class);
-		job.setJobName("Média de proposições legislativas por deputado");
+		job.setJobName("Contador de proposições por estado");
 		//
-		FileInputFormat.addInputPath(job, new Path(args[0]));
-		FileOutputFormat.setOutputPath(job, new Path(args[1]));
+		FileInputFormat.addInputPath(job, new Path(arquivoEntrada));
+		FileOutputFormat.setOutputPath(job, new Path(diretorioSaida));
 		//
 		job.setMapperClass(ProposicoesPorEstadoMapper.class);
 		job.setReducerClass(ProposicoesPorEstadoReducer.class);
 		//
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
+		job.setOutputValueClass(LongWritable.class);
 		//
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}

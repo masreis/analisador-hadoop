@@ -1,4 +1,4 @@
-package net.marcoreis.hadoop.jobs.parte2;
+package net.marcoreis.hadoop.mapreduce.parte2;
 
 import java.io.IOException;
 
@@ -21,14 +21,14 @@ import org.apache.log4j.Logger;
  * 
  *
  */
-public class MunicipiosBeneficiadosDriver extends Configured implements Tool {
-	private static Logger logger = Logger.getLogger(MunicipiosBeneficiadosDriver.class.getName());
+public class TopNCidadesPorValorDriver extends Configured implements Tool {
+	private static Logger logger = Logger.getLogger(TopNCidadesPorValorDriver.class
+			.getName());
 
 	public Job criarJob(String inputDir, String outputDir) throws IOException {
-		getConf().addResource("configuracao-job.xml");
 		Job job = Job.getInstance();
-		job.setJarByClass(MunicipiosBeneficiadosDriver.class);
-		String nomeJob = job.getConfiguration().get("nome.job.municipios.beneficiados");
+		job.setJarByClass(TopNCidadesPorValorDriver.class);
+		String nomeJob = "Job - Cidades com mais recursos";
 		job.setJobName(nomeJob);
 		//
 		FileInputFormat.addInputPath(job, new Path(inputDir));
@@ -37,15 +37,18 @@ public class MunicipiosBeneficiadosDriver extends Configured implements Tool {
 		job.setMapperClass(MunicipiosBeneficiadosMapper.class);
 		job.setReducerClass(MunicipiosBeneficiadosReducer.class);
 		//
-		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(LongWritable.class);
+		job.setOutputKeyClass(LongWritable.class);
+		job.setOutputValueClass(Text.class);
 		//
+		getConf().addResource("configuracao-bolsa-familia.xml");
+		Integer qtdCidades = Integer.parseInt(getConf().get(
+				"quantidade.limite.cidades"));
 		return job;
 	}
 
 	public static void main(String[] args) {
 		try {
-			int retorno = ToolRunner.run(new MunicipiosBeneficiadosDriver(), args);
+			int retorno = ToolRunner.run(new TopNCidadesPorValorDriver(), args);
 			System.exit(retorno);
 		} catch (Exception e) {
 			logger.error(e);

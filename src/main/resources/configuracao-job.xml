@@ -1,8 +1,8 @@
 <configuration>
 
 	<property>
-		<name>nome.job.municipio.por.valor</name>
-		<value>Job - Município por valor</value>
+		<name>nome.job.municipios.beneficiados</name>
+		<value>Job - Município beneficiados</value>
 	</property>
 
 </configuration>

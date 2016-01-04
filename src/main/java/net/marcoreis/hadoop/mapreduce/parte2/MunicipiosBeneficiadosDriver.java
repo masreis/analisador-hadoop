@@ -1,10 +1,10 @@
-package net.marcoreis.hadoop.jobs.parte2;
+package net.marcoreis.hadoop.mapreduce.parte2;
 
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -21,14 +21,14 @@ import org.apache.log4j.Logger;
  * 
  *
  */
-public class TopNCidadesPorValorDriver extends Configured implements Tool {
-	private static Logger logger = Logger.getLogger(TopNCidadesPorValorDriver.class
-			.getName());
+public class MunicipiosBeneficiadosDriver extends Configured implements Tool {
+	private static Logger logger = Logger.getLogger(MunicipiosBeneficiadosDriver.class.getName());
 
 	public Job criarJob(String inputDir, String outputDir) throws IOException {
-		Job job = Job.getInstance();
-		job.setJarByClass(TopNCidadesPorValorDriver.class);
-		String nomeJob = "Job - Cidades com mais recursos";
+		getConf().addResource("configuracao-job.xml");
+		Job job = Job.getInstance(getConf());
+		job.setJarByClass(MunicipiosBeneficiadosDriver.class);
+		String nomeJob = job.getConfiguration().get("nome.job.municipios.beneficiados");
 		job.setJobName(nomeJob);
 		//
 		FileInputFormat.addInputPath(job, new Path(inputDir));
@@ -36,19 +36,18 @@ public class TopNCidadesPorValorDriver extends Configured implements Tool {
 		//
 		job.setMapperClass(MunicipiosBeneficiadosMapper.class);
 		job.setReducerClass(MunicipiosBeneficiadosReducer.class);
+		// job.setCombinerClass(MunicipiosBeneficiadosReducer.class);
 		//
-		job.setOutputKeyClass(LongWritable.class);
-		job.setOutputValueClass(Text.class);
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(DoubleWritable.class);
+		job.setNumReduceTasks(3);
 		//
-		getConf().addResource("configuracao-bolsa-familia.xml");
-		Integer qtdCidades = Integer.parseInt(getConf().get(
-				"quantidade.limite.cidades"));
 		return job;
 	}
 
 	public static void main(String[] args) {
 		try {
-			int retorno = ToolRunner.run(new TopNCidadesPorValorDriver(), args);
+			int retorno = ToolRunner.run(new MunicipiosBeneficiadosDriver(), args);
 			System.exit(retorno);
 		} catch (Exception e) {
 			logger.error(e);
@@ -57,7 +56,9 @@ public class TopNCidadesPorValorDriver extends Configured implements Tool {
 
 	@Override
 	public int run(String[] args) throws Exception {
-		Job job = criarJob(args[0], args[1]);
+		String entrada = "/home/marco/dados/bolsa-familia/entrada/201505_BolsaFamiliaFolhaPagamento.csv";
+		String saida = "/home/marco/dados/bolsa-familia/saida";
+		Job job = criarJob(entrada, saida);
 		return job.waitForCompletion(true) ? 0 : 1;
 	}
 }

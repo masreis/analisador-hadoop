@@ -10,26 +10,26 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
 public class ProposicoesPorPeriodoDriverV2 extends Configured implements Tool {
-	public static void main(String[] args) throws Exception {
-		ToolRunner.run(new ProposicoesPorPeriodoDriverV2(), args);
-	}
+    public static void main(String[] args) throws Exception {
+	ToolRunner.run(new ProposicoesPorPeriodoDriverV2(), args);
+    }
 
-	@Override
-	public int run(String[] args) throws Exception {
-		Job job = Job.getInstance(getConf());
-		//
-		job.setJarByClass(ProposicoesPorPeriodoDriverV2.class);
-		job.setJobName("Contador de proposições legislativas por período");
-		//
-		FileInputFormat.addInputPath(job, new Path(args[0]));
-		FileOutputFormat.setOutputPath(job, new Path(args[1]));
-		//
-		job.setMapperClass(ProposicoesPorPeriodoMapper.class);
-		job.setReducerClass(ProposicoesPorPeriodoReducer.class);
-		//
-		job.setOutputKeyClass(IntWritable.class);
-		job.setOutputValueClass(IntWritable.class);
-		//
-		return job.waitForCompletion(true) ? 0 : 1;
-	}
+    @Override
+    public int run(String[] args) throws Exception {
+	Job job = Job.getInstance(getConf());
+	//
+	job.setJarByClass(ProposicoesPorPeriodoDriverV2.class);
+	job.setJobName("Contador de proposições legislativas por período");
+	//
+	FileInputFormat.addInputPath(job, new Path(args[0]));
+	FileOutputFormat.setOutputPath(job, new Path(args[1]));
+	//
+	job.setMapperClass(ProposicoesPorPeriodoMapper.class);
+	job.setReducerClass(ProposicoesPorPeriodoReducer.class);
+	//
+	job.setOutputKeyClass(IntWritable.class);
+	job.setOutputValueClass(IntWritable.class);
+	//
+	return job.waitForCompletion(true) ? 0 : 1;
+    }
 }

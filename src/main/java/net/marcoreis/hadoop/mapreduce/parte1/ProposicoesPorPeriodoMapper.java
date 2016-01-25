@@ -9,19 +9,21 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 public class ProposicoesPorPeriodoMapper extends Mapper<LongWritable, Text, ShortWritable, LongWritable> {
-	private ShortWritable chave = new ShortWritable();
-	private LongWritable valor = new LongWritable(1);
+    private ShortWritable chave = new ShortWritable();
+    // private Text chave = new Text();
+    private LongWritable valor = new LongWritable(1);
 
-	protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-		String[] valores = value.toString().split(";");
-		String data = valores[0];
-		String ano = data.substring(6, 10);
+    protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+	String[] valores = value.toString().split(";");
+	String data = valores[0];
+	String ano = data.substring(6, 10);
 
-		// Verifica se o período é numérico
-		if (!NumberUtils.isDigits(ano.substring(0, 1))) {
-			return;
-		}
-		chave.set(Short.parseShort(ano));
-		context.write(chave, valor);
+	// Verifica se o período é numérico
+	if (!NumberUtils.isDigits(ano.substring(0, 1))) {
+	    return;
 	}
+	chave.set(Short.parseShort(ano));
+	// chave.set(ano);
+	context.write(chave, valor);
+    }
 }

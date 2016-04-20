@@ -3,13 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.marcoreis</groupId>
 	<artifactId>analisador-hadoop</artifactId>
-	<version>treinamento-v-1-0</version>
+	<version>1-0</version>
 
 	<properties>
 		<version.compiler.plugin>2.3.1</version.compiler.plugin>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
-		<version.surefire.plugin>2.10</version.surefire.plugin>
 		<version.hadoop>2.7.1</version.hadoop>
 	</properties>
 
@@ -39,7 +38,7 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
-					<outputDirectory>/opt/hadoop/</outputDirectory>
+					<outputDirectory>${user.home}</outputDirectory>
 				</configuration>
 			</plugin>
 

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
@@ -21,13 +21,13 @@ import org.apache.log4j.Logger;
  * 
  *
  */
-public class MunicipiosBeneficiadosDriver extends Configured implements Tool {
-    private static Logger logger = Logger.getLogger(MunicipiosBeneficiadosDriver.class.getName());
+public class JuntarArquivosDriver extends Configured implements Tool {
+    private static Logger logger = Logger.getLogger(JuntarArquivosDriver.class.getName());
 
     public Job criarJob(String inputDir, String outputDir) throws IOException {
 	getConf().addResource("configuracao-job.xml");
 	Job job = Job.getInstance(getConf());
-	job.setJarByClass(MunicipiosBeneficiadosDriver.class);
+	job.setJarByClass(JuntarArquivosDriver.class);
 	String nomeJob = job.getConfiguration().get("nome.job.municipios.beneficiados");
 	job.setJobName(nomeJob);
 	//
@@ -39,14 +39,15 @@ public class MunicipiosBeneficiadosDriver extends Configured implements Tool {
 	// job.setCombinerClass(MunicipiosBeneficiadosReducer.class);
 	//
 	job.setOutputKeyClass(Text.class);
-	job.setOutputValueClass(IntWritable.class);
+	job.setOutputValueClass(DoubleWritable.class);
+	job.setNumReduceTasks(3);
 	//
 	return job;
     }
 
     public static void main(String[] args) {
 	try {
-	    int retorno = ToolRunner.run(new MunicipiosBeneficiadosDriver(), args);
+	    int retorno = ToolRunner.run(new JuntarArquivosDriver(), args);
 	    System.exit(retorno);
 	} catch (Exception e) {
 	    logger.error(e);
@@ -55,13 +56,9 @@ public class MunicipiosBeneficiadosDriver extends Configured implements Tool {
 
     @Override
     public int run(String[] args) throws Exception {
-	// String entrada =
-	// "/home/marco/dados/bolsa-familia/entrada/201505_BolsaFamiliaFolhaPagamento.csv";
-	// String saida = "/home/marco/dados/bolsa-familia/saida";
-	if (args.length < 2) {
-	    logger.warn("Informe diretórios de entrada e saída");
-	}
-	Job job = criarJob(args[0], args[1]);
+	String entrada = "/home/marco/dados/bolsa-familia/entrada/201505_BolsaFamiliaFolhaPagamento.csv";
+	String saida = "/home/marco/dados/bolsa-familia/saida";
+	Job job = criarJob(entrada, saida);
 	return job.waitForCompletion(true) ? 0 : 1;
     }
 }

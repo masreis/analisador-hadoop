@@ -2,14 +2,14 @@ package net.marcoreis.hadoop.mapreduce.parte2;
 
 import java.io.IOException;
 
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-public class MunicipiosBeneficiadosMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+public class JuntarArquivosMapper extends Mapper<LongWritable, Text, Text, DoubleWritable> {
     private Text chave = new Text();
-    private IntWritable valor = new IntWritable();
+    private DoubleWritable valor = new DoubleWritable();
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
@@ -20,14 +20,9 @@ public class MunicipiosBeneficiadosMapper extends Mapper<LongWritable, Text, Tex
 	    return;
 	}
 	String municipio = valores[2];
-	String strValor = valores[10].replaceAll("\\.00", "").replaceAll(",", "");
-	Integer iValor = 0;
-	try {
-	    iValor = Integer.parseInt(strValor);
-	} catch (NumberFormatException e) {
-	    e.printStackTrace();
-	}
-	valor.set(iValor);
+	String strValor = valores[10];
+	Double dValor = Double.parseDouble(strValor.replaceAll(",", ""));
+	valor.set(dValor);
 	chave.set(uf + "-" + municipio);
 	context.write(chave, valor);
     }

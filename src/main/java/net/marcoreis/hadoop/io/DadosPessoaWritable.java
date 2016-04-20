@@ -6,20 +6,15 @@ import java.io.IOException;
 
 import org.apache.hadoop.io.WritableComparable;
 
-public class ChamTtcTermsWritable implements WritableComparable<ChamTtcTermsWritable> {
+public class DadosPessoaWritable implements WritableComparable<DadosPessoaWritable> {
     private int cham;
     private int ttc;
     private int imeis;
 
-    public ChamTtcTermsWritable() {
+    public DadosPessoaWritable() {
 	set(cham, ttc, imeis);
     }
 
-    /**
-     * Use o formato cham,ttc,count(imeis)
-     * 
-     * @param valor
-     */
     public void set(String valor) {
 	String[] dados = valor.split(",");
 	this.cham = Integer.parseInt(dados[0]);
@@ -77,10 +72,10 @@ public class ChamTtcTermsWritable implements WritableComparable<ChamTtcTermsWrit
 	if (obj == null) {
 	    return false;
 	}
-	if (!(obj instanceof ChamTtcTermsWritable)) {
+	if (!(obj instanceof DadosPessoaWritable)) {
 	    return false;
 	}
-	ChamTtcTermsWritable other = (ChamTtcTermsWritable) obj;
+	DadosPessoaWritable other = (DadosPessoaWritable) obj;
 	if (cham != other.cham) {
 	    return false;
 	}
@@ -107,8 +102,7 @@ public class ChamTtcTermsWritable implements WritableComparable<ChamTtcTermsWrit
     }
 
     @Override
-    public int compareTo(ChamTtcTermsWritable o) {
-	// TODO Auto-generated method stub
+    public int compareTo(DadosPessoaWritable o) {
 	return 0;
     }
 

@@ -2,7 +2,7 @@
 
 	<property>
 		<name>nome.job.municipios.beneficiados</name>
-		<value>Job - Município beneficiados</value>
+		<value>Job - Municípios beneficiados</value>
 	</property>
 
 </configuration>

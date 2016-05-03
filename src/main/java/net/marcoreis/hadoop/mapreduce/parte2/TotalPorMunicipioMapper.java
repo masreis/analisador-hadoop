@@ -7,9 +7,16 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-public class MunicipiosBeneficiadosMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+public class TotalPorMunicipioMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
     private Text chave = new Text();
     private IntWritable valor = new IntWritable();
+    private boolean incluirData;
+
+    @Override
+    protected void setup(Mapper<LongWritable, Text, Text, IntWritable>.Context context)
+	    throws IOException, InterruptedException {
+	incluirData = context.getConfiguration().get("incluir.data") != null;
+    }
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
@@ -21,14 +28,16 @@ public class MunicipiosBeneficiadosMapper extends Mapper<LongWritable, Text, Tex
 	}
 	String municipio = valores[2];
 	String strValor = valores[10].replaceAll("\\.00", "").replaceAll(",", "");
-	Integer iValor = 0;
-	try {
-	    iValor = Integer.parseInt(strValor);
-	} catch (NumberFormatException e) {
-	    e.printStackTrace();
-	}
+	Integer iValor = Integer.parseInt(strValor);
 	valor.set(iValor);
-	chave.set(uf + "-" + municipio);
+	if (incluirData) {
+	    String[] data = valores[11].split("/");
+	    String ano = data[1];
+	    String mes = data[0];
+	    chave.set(uf + "\t" + municipio + "\t" + ano + "\t" + mes);
+	} else {
+	    chave.set(uf + "\t" + municipio);
+	}
 	context.write(chave, valor);
     }
 }

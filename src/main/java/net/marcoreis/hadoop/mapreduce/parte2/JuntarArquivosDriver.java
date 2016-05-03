@@ -34,8 +34,8 @@ public class JuntarArquivosDriver extends Configured implements Tool {
 	FileInputFormat.addInputPath(job, new Path(inputDir));
 	FileOutputFormat.setOutputPath(job, new Path(outputDir));
 	//
-	job.setMapperClass(MunicipiosBeneficiadosMapper.class);
-	job.setReducerClass(MunicipiosBeneficiadosReducer.class);
+	job.setMapperClass(TotalPorMunicipioMapper.class);
+	job.setReducerClass(TotalPorMunicipioReducer.class);
 	// job.setCombinerClass(MunicipiosBeneficiadosReducer.class);
 	//
 	job.setOutputKeyClass(Text.class);

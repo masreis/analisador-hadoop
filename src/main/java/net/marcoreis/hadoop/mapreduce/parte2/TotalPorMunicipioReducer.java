@@ -6,7 +6,7 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
-public class MunicipiosBeneficiadosReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+public class TotalPorMunicipioReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
     private IntWritable totalPorMunicipio = new IntWritable();
 
     @Override

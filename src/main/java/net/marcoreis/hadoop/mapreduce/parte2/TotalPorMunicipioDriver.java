@@ -21,21 +21,23 @@ import org.apache.log4j.Logger;
  * 
  *
  */
-public class MunicipiosBeneficiadosDriver extends Configured implements Tool {
-    private static Logger logger = Logger.getLogger(MunicipiosBeneficiadosDriver.class.getName());
+public class TotalPorMunicipioDriver extends Configured implements Tool {
+    private static Logger logger = Logger.getLogger(TotalPorMunicipioDriver.class.getName());
 
     public Job criarJob(String inputDir, String outputDir) throws IOException {
 	getConf().addResource("configuracao-job.xml");
 	Job job = Job.getInstance(getConf());
-	job.setJarByClass(MunicipiosBeneficiadosDriver.class);
+	job.setJarByClass(TotalPorMunicipioDriver.class);
 	String nomeJob = job.getConfiguration().get("nome.job.municipios.beneficiados");
+	boolean incluirData = job.getConfiguration().get("incluir.data") != null;
+	logger.info("Data incluída no processamento: " + incluirData);
 	job.setJobName(nomeJob);
 	//
 	FileInputFormat.addInputPath(job, new Path(inputDir));
 	FileOutputFormat.setOutputPath(job, new Path(outputDir));
 	//
-	job.setMapperClass(MunicipiosBeneficiadosMapper.class);
-	job.setReducerClass(MunicipiosBeneficiadosReducer.class);
+	job.setMapperClass(TotalPorMunicipioMapper.class);
+	job.setReducerClass(TotalPorMunicipioReducer.class);
 	// job.setCombinerClass(MunicipiosBeneficiadosReducer.class);
 	//
 	job.setOutputKeyClass(Text.class);
@@ -46,7 +48,7 @@ public class MunicipiosBeneficiadosDriver extends Configured implements Tool {
 
     public static void main(String[] args) {
 	try {
-	    int retorno = ToolRunner.run(new MunicipiosBeneficiadosDriver(), args);
+	    int retorno = ToolRunner.run(new TotalPorMunicipioDriver(), args);
 	    System.exit(retorno);
 	} catch (Exception e) {
 	    logger.error(e);

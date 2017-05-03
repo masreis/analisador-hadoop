@@ -28,34 +28,34 @@ public class DadosEleitoraisMapper extends
 		// String conteudo = value.toString().replaceAll("\"", "");
 		String valores[] = value.toString().split("\";\"");
 		int idValor = 22;
-		int idData = 21;
+		// int idData = 21;
 		String tipo = "despesa";
 		if (valores.length == 35) {
 			tipo = "receita";
 			idValor = 25;
-			idData = 24;
+			// idData = 24;
 		} else if (valores.length == 21) {
 			idValor = 18;
-			idData = 17;
+			// idData = 17;
 			tipo = "despesa";
+		} else if (valores.length == 31) {
+			idValor = 21;
+			tipo = "receita";
 		}
 		String uf = valores[5];
 		if ("UF".equals(uf)) {
 			return;
 		}
 		String municipio = valores[7];
-		try {
-			String strValor = valores[idValor];
-			Double dValor = Double
-					.parseDouble(strValor.replaceAll(",", "."));
-			valor.set(dValor);
-			String[] data = valores[idData].split("/");
-			String ano = data[2].substring(0, 4);
-			chave.set(uf + ";" + municipio + ";" + ano + ";"
-					+ tipo);
-			context.write(chave, valor);
-		} catch (Exception e) {
-			System.out.println("Erro------------------------");
-		}
+		String strValor = valores[idValor];
+		Double dValor = Double
+				.parseDouble(strValor.replaceAll(",", "."));
+		valor.set(dValor);
+		// String[] data = valores[idData].split("/");
+		// String ano = data[2].substring(0, 4);
+		String eleicao = valores[1];
+		chave.set(uf + ";" + municipio + ";" + eleicao + ";"
+				+ tipo);
+		context.write(chave, valor);
 	}
 }

@@ -21,41 +21,46 @@ import org.apache.log4j.Logger;
  * 
  *
  */
-public class TopNCidadesPorValorDriver extends Configured implements Tool {
-    private static Logger logger = Logger.getLogger(TopNCidadesPorValorDriver.class.getName());
+public class TopNCidadesPorValorDriver extends Configured
+		implements Tool {
+	private static Logger logger = Logger.getLogger(
+			TopNCidadesPorValorDriver.class.getName());
 
-    public Job criarJob(String inputDir, String outputDir) throws IOException {
-	Job job = Job.getInstance();
-	job.setJarByClass(TopNCidadesPorValorDriver.class);
-	String nomeJob = "Job - Cidades com mais recursos";
-	job.setJobName(nomeJob);
-	//
-	FileInputFormat.addInputPath(job, new Path(inputDir));
-	FileOutputFormat.setOutputPath(job, new Path(outputDir));
-	//
-	job.setMapperClass(TotalPorMunicipioMapper.class);
-	job.setReducerClass(TotalPorMunicipioReducer.class);
-	//
-	job.setOutputKeyClass(LongWritable.class);
-	job.setOutputValueClass(Text.class);
-	//
-	getConf().addResource("configuracao-bolsa-familia.xml");
-	Integer qtdCidades = Integer.parseInt(getConf().get("quantidade.limite.cidades"));
-	return job;
-    }
-
-    public static void main(String[] args) {
-	try {
-	    int retorno = ToolRunner.run(new TopNCidadesPorValorDriver(), args);
-	    System.exit(retorno);
-	} catch (Exception e) {
-	    logger.error(e);
+	public Job criarJob(String inputDir, String outputDir)
+			throws IOException {
+		Job job = Job.getInstance();
+		job.setJarByClass(TopNCidadesPorValorDriver.class);
+		String nomeJob = "Job - Cidades com mais recursos";
+		job.setJobName(nomeJob);
+		//
+		FileInputFormat.addInputPath(job, new Path(inputDir));
+		FileOutputFormat.setOutputPath(job, new Path(outputDir));
+		//
+		job.setMapperClass(TotalPorMunicipioMapper.class);
+		job.setReducerClass(TotalPorMunicipioReducer.class);
+		//
+		job.setOutputKeyClass(LongWritable.class);
+		job.setOutputValueClass(Text.class);
+		//
+		getConf().addResource("configuracao-bolsa-familia.xml");
+		Integer qtdCidades = Integer.parseInt(
+				getConf().get("quantidade.limite.cidades"));
+		return job;
 	}
-    }
 
-    @Override
-    public int run(String[] args) throws Exception {
-	Job job = criarJob(args[0], args[1]);
-	return job.waitForCompletion(true) ? 0 : 1;
-    }
+	public static void main(String[] args) {
+		try {
+			int retorno = ToolRunner
+					.run(new TopNCidadesPorValorDriver(), args);
+			System.exit(retorno);
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
+
+	@Override
+	public int run(String[] args) throws Exception {
+		Job job = criarJob(args[0], args[1]);
+		return job.waitForCompletion(true) ? 0 : 1;
+	}
 }

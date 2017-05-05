@@ -2,6 +2,7 @@ package net.marcoreis.hadoop.mapreduce.parte2;
 
 import java.io.IOException;
 
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -28,19 +29,23 @@ public class TotalPorMunicipioDriver extends Configured
 
 	public Job criarJob(String inputDir, String outputDir)
 			throws IOException {
-		getConf().addResource("configuracao-job.xml");
+		// getConf().addResource("configuracao-job.xml");
 		Job job = Job.getInstance(getConf());
 		job.setJarByClass(TotalPorMunicipioDriver.class);
 		String nomeJob = job.getConfiguration()
 				.get("nome.job.municipios.beneficiados");
-		boolean incluirData = job.getConfiguration()
-				.get("incluir.data") != null;
-		logger.info("Data incluída no processamento: "
-				+ incluirData);
+		// boolean incluirData = job.getConfiguration()
+		// .get("incluir.data") != null;
+		// logger.info("Data incluída no processamento: "
+		// + incluirData);
 		job.setJobName(nomeJob);
 		//
 		FileInputFormat.addInputPath(job, new Path(inputDir));
-		FileOutputFormat.setOutputPath(job, new Path(outputDir));
+		String time = DateFormatUtils.format(
+				System.currentTimeMillis(),
+				"yyyy-MM-dd-hh-mm-ss");
+		FileOutputFormat.setOutputPath(job,
+				new Path(outputDir + "-" + time));
 		//
 		job.setMapperClass(TotalPorMunicipioMapper.class);
 		job.setReducerClass(TotalPorMunicipioReducer.class);

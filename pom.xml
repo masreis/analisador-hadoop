@@ -19,6 +19,19 @@
 			<version>${version.hadoop}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-common</artifactId>
+			<version>${version.hadoop}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-distcp</artifactId>
+			<version>${version.hadoop}</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

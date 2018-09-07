@@ -44,7 +44,7 @@ public class TotalPorMunicipioDriver extends Configured
 				System.currentTimeMillis(),
 				"yyyy-MM-dd-hh-mm-ss");
 		FileOutputFormat.setOutputPath(job,
-				new Path(outputDir + "-" + time));
+				new Path(outputDir + "/" + time));
 		//
 		job.setMapperClass(TotalPorMunicipioMapper.class);
 		job.setReducerClass(TotalPorMunicipioReducer.class);

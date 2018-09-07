@@ -33,7 +33,7 @@ public class TotalPorMunicipioMapper
 			return;
 		}
 		// String uf = valores[2];
-		String municipio = valores[4];
+		String municipio = valores[4] + "-" + valores[3];
 		String strValor = valores[7].replaceAll("\\,00", "")
 				.replaceAll(",", "");
 		Integer iValor = Integer.parseInt(strValor);

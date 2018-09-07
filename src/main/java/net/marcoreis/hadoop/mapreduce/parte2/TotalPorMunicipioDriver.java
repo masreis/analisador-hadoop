@@ -34,10 +34,9 @@ public class TotalPorMunicipioDriver extends Configured
 		job.setJarByClass(TotalPorMunicipioDriver.class);
 		String nomeJob = job.getConfiguration()
 				.get("nome.job.municipios.beneficiados");
-		// boolean incluirData = job.getConfiguration()
-		// .get("incluir.data") != null;
-		// logger.info("Data incluída no processamento: "
-		// + incluirData);
+		if (nomeJob == null) {
+			nomeJob = "Total por município";
+		}
 		job.setJobName(nomeJob);
 		//
 		FileInputFormat.addInputPath(job, new Path(inputDir));
@@ -73,7 +72,8 @@ public class TotalPorMunicipioDriver extends Configured
 		// "/home/marco/dados/bolsa-familia/entrada/201505_BolsaFamiliaFolhaPagamento.csv";
 		// String saida = "/home/marco/dados/bolsa-familia/saida";
 		if (args.length < 2) {
-			logger.warn("Informe diretórios de entrada e saída");
+			logger.warn(
+					"Informe diretórios de entrada e saída");
 		}
 		Job job = criarJob(args[0], args[1]);
 		return job.waitForCompletion(true) ? 0 : 1;

@@ -25,25 +25,27 @@ public class TotalPorMunicipioMapper
 	protected void map(LongWritable key, Text value,
 			Context context)
 			throws IOException, InterruptedException {
-		String valores[] = value.toString().split("\t");
-		String uf = valores[0];
+		String valores[] = value.toString().replaceAll("\"", "")
+				.split(";");
+		String anoMes = valores[0].replaceAll("\"", "");
 		// Verifica se a linha não é de cabeçalho
-		if ("UF".equals(uf)) {
+		if (anoMes.startsWith("Ano")) {
 			return;
 		}
-		String municipio = valores[2];
-		String strValor = valores[10].replaceAll("\\.00", "")
+		// String uf = valores[2];
+		String municipio = valores[4];
+		String strValor = valores[7].replaceAll("\\,00", "")
 				.replaceAll(",", "");
 		Integer iValor = Integer.parseInt(strValor);
 		valor.set(iValor);
 		if (incluirData) {
-			String[] data = valores[11].split("/");
-			String ano = data[1];
-			String mes = data[0];
-			chave.set(uf + "\t" + municipio + "\t" + ano + "\t"
-					+ mes);
+			// String[] data = valores[11].split("/");
+			// String ano = data[1];
+			// String mes = data[0];
+			// chave.set(anoMes + "\t" + municipio + "\t" + ano
+			// + "\t" + mes);
 		} else {
-			chave.set(uf + "\t" + municipio);
+			chave.set(anoMes + "\t" + municipio);
 		}
 		context.write(chave, valor);
 	}

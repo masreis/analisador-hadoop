@@ -11,7 +11,7 @@
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<!-- <version.hadoop>2.7.1</version.hadoop> -->
-		<cdh.hadoop>2.6.0-cdh5.15.1</cdh.hadoop>
+		<cdh.hadoop>3.2.3</cdh.hadoop>
 		<cdh.hbase>1.2.0-cdh5.15.1</cdh.hbase>
 	</properties>
 

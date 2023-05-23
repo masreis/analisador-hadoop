@@ -41,12 +41,11 @@
 		<!-- <version>${version.hadoop}</version> -->
 		<!-- </dependency> -->
 
-		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-common</artifactId>
-			<version>${cdh.hadoop}</version>
-			<scope>provided</scope>
-		</dependency>
+<dependency>
+  <groupId>org.apache.hadoop</groupId>
+  <artifactId>hadoop-common</artifactId>
+  <version>[3.2.4,)</version>
+</dependency>
 
 		<dependency>
 			<groupId>org.apache.hadoop</groupId>
